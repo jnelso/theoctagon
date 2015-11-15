@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import com.meltmedia.data.IEntity;
+import com.meltmedia.dao.data.IEntity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
