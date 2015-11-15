@@ -2,7 +2,7 @@ package com.meltmedia.dao;
 
 import java.util.List;
 
-import com.meltmedia.data.IEntity;
+import com.meltmedia.dao.data.IEntity;
 
 /**
  * Base interface for DAO services.

@@ -5,7 +5,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table( name = "USER" )
-public class User extends BaseEntity {
+public class User extends com.meltmedia.dao.data.BaseEntity {
   private String email;
   private String password;
   private String salt;

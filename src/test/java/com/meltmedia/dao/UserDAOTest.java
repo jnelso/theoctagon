@@ -67,7 +67,7 @@ public class UserDAOTest {
     Assert.assertEquals( 0, userList.size() );
 
   }
-
+  
   @Test
   public void testUpdateUser() {
 

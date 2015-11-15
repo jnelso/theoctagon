@@ -1,4 +1,4 @@
-package com.meltmedia.data;
+package com.meltmedia.dao.data;
 
 import org.hibernate.annotations.GenericGenerator;
 
