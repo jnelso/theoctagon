@@ -49,17 +49,47 @@ public class UserResource {
 
   @GET
   @Produces("application/json")
-  public List<UserRepresentation> getUsers() {
-    List<User> users = dao.list();
+  // @param pageNumber: optional, defaults to first page's worth of users
+  // @param pageLimit: optional, defaults to 20
+  // @return
+  
+ public List<UserRepresentation> getUsers(
+		  @QueryParam("pageNumber") @DefaultValue("1") int pageNumber,
+		  @QueryParam("pageLimit") @DefaultValue("20") int pageLimit) {
+	  
+	List<User> users = dao.list();
 
-    List<UserRepresentation> userReps = new ArrayList<UserRepresentation>();
+	List<UserRepresentation> userReps = new ArrayList<UserRepresentation>();
+   
+   // Validate pageNumber parameter
+   if (pageNumber < 1) {
+   	log.error( "pageNumber must be greater than or equal to 1." );
+       throw new JsonMessageException( Response.Status.BAD_REQUEST, "pageNumber must be greater than or equal to 1." );
 
-    for (User user : users) {
-      userReps.add( createRepresentation( user ) );
-    }
+   }
+   
+   // Validate pageLimit parameter
+   if (pageLimit < 1) {
+   	log.error( "pageLimit must be greater than or equal to 1." );
+       throw new JsonMessageException( Response.Status.BAD_REQUEST, "pageLimit must be greater than or equal to 1." );
+   }
+   
+   // Check that pageNumber is not out of valid range
+   if ((pageNumber - 1) > users.size() / pageLimit) {
+   	log.error( "pageNumber must be in valid range for number of users." );
+       throw new JsonMessageException( Response.Status.BAD_REQUEST, "pageNumber must be in valid range for number of users." );
+   }
+   
+   // Filter out only users on this page and return
 
-    return userReps;
-  }
+   users = users.subList((pageNumber-1)*pageLimit, Math.min((pageNumber-1)*pageLimit+pageLimit,  users.size()));
+	
+	for (User user : users) {
+	  	userReps.add( createRepresentation( user ) );	     
+	}
+	
+   return userReps;
+ }
 
   @GET
   @Path("/{userId}")

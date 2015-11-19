@@ -187,9 +187,34 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
+ 		    <!-- Bind Groovy Eclipse Compiler -->
+                    <compilerId>groovy-eclipse-compiler</compilerId>
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+		<dependencies>
+                    <!-- Define which Groovy version will be used for build (default is 2.0) -->
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-batch</artifactId>
+                        <version>1.8.6-01</version>
+                    </dependency>
+                    <!-- Define dependency to Groovy Eclipse Compiler (as it's referred in compilerId) -->
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-compiler</artifactId>
+                        <version>2.7.0-01</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+	    <!-- Define Groovy Eclipse Compiler again and set extensions=true. Thanks to this, plugin will -->
+            <!-- enhance default build life cycle with an extra phase which adds additional Groovy source folders -->
+            <!-- Thanks to this, Clover will be able to find your Groovy files. It works with Maven 3.x -->
+            <plugin>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>2.7.0-01</version>
+                <extensions>true</extensions>
             </plugin>
 
             <plugin>
@@ -240,7 +265,6 @@
               <version>1.4</version>
 
               <dependencies>
-
                 <dependency>
                   <groupId>org.codehaus.gmaven.runtime</groupId>
                   <artifactId>gmaven-runtime-1.8</artifactId>
@@ -264,10 +288,14 @@
               <executions>
 
                 <execution>
+	          <phase>generate-resources</phase>
                   <configuration>
                     <providerSelection>1.8</providerSelection>
                   </configuration>
                   <goals>
+		    <goal>generateStubs</goal>
+		    <goal>compile</goal>
+		    <goal>generateTestStubs</goal>
                     <goal>testCompile</goal>
                   </goals>
                 </execution>
